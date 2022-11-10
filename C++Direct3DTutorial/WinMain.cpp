@@ -1,4 +1,6 @@
 #include <Windows.h>
+#include "Graphics.h"
+#include <memory>
 
 LRESULT CALLBACK WndProc(
 	HWND hWnd,
@@ -94,6 +96,8 @@ int CALLBACK WinMain(
 	while (gResult = (GetMessage(&msg, nullptr, 0, 0)) > 0) {
 		//VVV Used for WM_CHAR VVV
 		//TranslateMessage(&msg);
+		Graphics Gfx = Graphics(hWnd);
+		Gfx.EndFrame();
 		DispatchMessage(&msg);
 	}
 	//Exit
