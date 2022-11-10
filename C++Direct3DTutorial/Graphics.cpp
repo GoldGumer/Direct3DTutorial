@@ -1,5 +1,6 @@
 #include "Graphics.h"
-
+#include "Vertex.h"
+#include <Windows.h>
 #pragma comment(lib,"d3d11.lib")
 
 Graphics::Graphics(HWND hWnd)
@@ -56,4 +57,13 @@ Graphics::~Graphics()
 void Graphics::EndFrame()
 {
 	pSwap->Present(1u, 0u);
+}
+
+void Graphics::DrawTriangle()
+{
+	Vertex vertices[3] = { Vertex(1,1,0), Vertex(-1,1,0), Vertex(0,0,0), }
+
+	ID3D11Buffer* pVertexBuffer;
+	pDevice->CreateBuffer();
+	pContext->Draw(3u, 0u);
 }

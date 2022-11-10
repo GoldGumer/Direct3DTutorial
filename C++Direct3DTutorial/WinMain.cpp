@@ -93,6 +93,9 @@ int CALLBACK WinMain(
 	//Message Processing
 	MSG msg;
 	BOOL gResult;
+
+	//This is where the window is updated
+	//Thus any graphics calls go in here which
 	while (gResult = (GetMessage(&msg, nullptr, 0, 0)) > 0) {
 		//VVV Used for WM_CHAR VVV
 		//TranslateMessage(&msg);

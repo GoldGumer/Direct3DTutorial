@@ -7,6 +7,7 @@ public:
 	Graphics(HWND hWnd);
 	~Graphics();
 	void EndFrame();
+	void DrawTriangle();
 private:
 	ID3D11Device* pDevice = nullptr;
 	IDXGISwapChain* pSwap = nullptr;
