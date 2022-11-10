@@ -61,9 +61,25 @@ void Graphics::EndFrame()
 
 void Graphics::DrawTriangle()
 {
-	Vertex vertices[3] = { Vertex(1,1,0), Vertex(-1,1,0), Vertex(0,0,0), }
-
+	Vertex vertices[3] = { Vertex(0,1,0), Vertex(-1,0,0), Vertex(1,0,0), };
 	ID3D11Buffer* pVertexBuffer;
-	pDevice->CreateBuffer();
+
+	D3D11_BUFFER_DESC bufferDesc = {};
+	bufferDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
+	bufferDesc.Usage = D3D11_USAGE_DEFAULT;
+	bufferDesc.CPUAccessFlags = 0u;
+	bufferDesc.MiscFlags = 0u;
+	bufferDesc.ByteWidth = sizeof(vertices);
+	bufferDesc.StructureByteStride = sizeof(Vertex);
+
+	D3D11_SUBRESOURCE_DATA subData = {};
+	subData.pSysMem = vertices;
+
+	pDevice->CreateBuffer(&bufferDesc, &subData, &pVertexBuffer);
+
+	const UINT stride = sizeof(Vertex);
+	const UINT offset = 0u;
+
+	pContext->IASetVertexBuffers(0u, 1u, &pVertexBuffer, &stride, &offset);
 	pContext->Draw(3u, 0u);
 }
