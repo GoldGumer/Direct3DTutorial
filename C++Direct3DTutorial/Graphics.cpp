@@ -1,7 +1,9 @@
 #include "Graphics.h"
 #include "Vertex.h"
 #include <Windows.h>
+#include <d3dcompiler.h>
 #pragma comment(lib,"d3d11.lib")
+#pragma comment(lib,"D3DCompiler.lib")
 
 Graphics::Graphics(HWND hWnd)
 {
@@ -61,6 +63,7 @@ void Graphics::EndFrame()
 
 void Graphics::DrawTriangle()
 {
+	//vertices for triangle
 	Vertex vertices[3] = { Vertex(0,1,0), Vertex(-1,0,0), Vertex(1,0,0), };
 	ID3D11Buffer* pVertexBuffer;
 
@@ -81,5 +84,18 @@ void Graphics::DrawTriangle()
 	const UINT offset = 0u;
 
 	pContext->IASetVertexBuffers(0u, 1u, &pVertexBuffer, &stride, &offset);
-	pContext->Draw(3u, 0u);
+
+	ID3DBlob* pBlob;
+	
+	//setting up vertex shader
+	ID3D11VertexShader* pVertexShader;
+	D3DReadFileToBlob(L"VertexShader.cso", &pBlob);
+	pDevice->CreateVertexShader(pBlob->GetBufferPointer(), pBlob->GetBufferSize(), nullptr, &pVertexShader);
+	pContext->VSSetShader(pVertexShader, nullptr, 0);
+
+	//setting up pixel shader
+	ID3D11PixelShader* pPixelShader;
+	D3DReadFileToBlob(L"PixelShader.cso", &pBlob);
+	pDevice->CreatePixelShader(pBlob->GetBufferPointer(), pBlob->GetBufferSize(), nullptr, &pPixelShader);
+	pContext->Draw( 3u, 0u);
 }

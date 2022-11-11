@@ -94,12 +94,15 @@ int CALLBACK WinMain(
 	MSG msg;
 	BOOL gResult;
 
+	Graphics Gfx = Graphics(hWnd);
+
 	//This is where the window is updated
 	//Thus any graphics calls go in here which
 	while (gResult = (GetMessage(&msg, nullptr, 0, 0)) > 0) {
 		//VVV Used for WM_CHAR VVV
 		//TranslateMessage(&msg);
-		Graphics Gfx = Graphics(hWnd);
+		//Drawing triangle
+		Gfx.DrawTriangle();
 		Gfx.EndFrame();
 		DispatchMessage(&msg);
 	}
