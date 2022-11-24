@@ -54,6 +54,14 @@ Graphics::~Graphics()
 	{
 		pDevice->Release();
 	}
+	if (pVS != nullptr)
+	{
+		pVS->Release();
+	}
+	if (pPS != nullptr)
+	{
+		pPS->Release();
+	}
 }
 
 void Graphics::EndFrame()
@@ -87,15 +95,20 @@ void Graphics::DrawTriangle()
 
 	ID3DBlob* pBlob;
 	
+	//Making the shaders
+	D3DCompileFromFile(L"Shaders.shader", 0, 0, "VShader", "vs_4_0", 0, 0, &pBlob, 0);
+
 	//setting up vertex shader
-	ID3D11VertexShader* pVertexShader;
-	D3DReadFileToBlob(L"VertexShader.cso", &pBlob);
-	pDevice->CreateVertexShader(pBlob->GetBufferPointer(), pBlob->GetBufferSize(), nullptr, &pVertexShader);
-	pContext->VSSetShader(pVertexShader, nullptr, 0);
+	pDevice->CreateVertexShader(pBlob->GetBufferPointer(), pBlob->GetBufferSize(), nullptr, &pVS);
+
+	//Making the shaders
+	D3DCompileFromFile(L"Shaders.shader", 0, 0, "PShader", "ps_4_0", 0, 0, &pBlob, 0);
 
 	//setting up pixel shader
-	ID3D11PixelShader* pPixelShader;
-	D3DReadFileToBlob(L"PixelShader.cso", &pBlob);
-	pDevice->CreatePixelShader(pBlob->GetBufferPointer(), pBlob->GetBufferSize(), nullptr, &pPixelShader);
+	pDevice->CreatePixelShader(pBlob->GetBufferPointer(), pBlob->GetBufferSize(), nullptr, &pPS);
+
+	pContext->VSSetShader(pVS, 0, 0);
+	pContext->PSSetShader(pPS, 0, 0);
+
 	pContext->Draw( 3u, 0u);
 }
