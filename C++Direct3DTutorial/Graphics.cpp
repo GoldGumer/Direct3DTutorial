@@ -1,6 +1,7 @@
 #include "Graphics.h"
 #include "Vertex.h"
 #include <Windows.h>
+#include <d3dcommon.h>
 #include <d3dcompiler.h>
 #pragma comment(lib,"d3d11.lib")
 #pragma comment(lib,"D3DCompiler.lib")
@@ -93,8 +94,15 @@ void Graphics::DrawTriangle()
 
 	pContext->IASetVertexBuffers(0u, 1u, &pVertexBuffer, &stride, &offset);
 
-	ID3DBlob* pBlob;
-	
+	ShaderInit();
+
+	pContext->Draw( 3u, 0u);
+}
+
+void Graphics::ShaderInit()
+{
+	ID3D10Blob* pBlob = { 0 };
+
 	//Making the shaders
 	D3DCompileFromFile(L"Shaders.shader", 0, 0, "VShader", "vs_4_0", 0, 0, &pBlob, 0);
 
@@ -109,6 +117,4 @@ void Graphics::DrawTriangle()
 
 	pContext->VSSetShader(pVS, 0, 0);
 	pContext->PSSetShader(pPS, 0, 0);
-
-	pContext->Draw( 3u, 0u);
 }

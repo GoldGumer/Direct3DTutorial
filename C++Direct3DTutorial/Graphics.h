@@ -8,6 +8,7 @@ public:
 	~Graphics();
 	void EndFrame();
 	void DrawTriangle();
+	void ShaderInit();
 private:
 	ID3D11VertexShader* pVS;
 	ID3D11PixelShader* pPS;
